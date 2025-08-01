@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Chat Example</title>
+</head>
+
+<body>
+
+    <h2>Socket.IO Connection</h2>
+    <hr>
+    <input type="text" name="" id="msgInput" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+
+    <p id="serverReply"></p>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const socket = io();
+
+        socket.on("connect", () => {
+            console.log("Connected to server", socket.id);
+        });
+
+        socket.on("disconnect", () => {
+            console.log("Disconnected from server");
+        });
+
+        socket.on("serverMessage", (data) => {
+            document.getElementById("serverReply").innerText  = data;
+        });
+
+        const sendMessage = ()=>{
+            const message = document.getElementById("msgInput").value;
+
+            socket.emit("sendMessage", message);
+            document.getElementById("msgInput").value = ""; // Clear input field
+        }
+    </script>
+</body>
+
+</html>
