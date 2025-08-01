@@ -14,7 +14,13 @@
     <input type="text" name="" id="msgInput" placeholder="Type your message here...">
     <button onclick="sendMessage()">Send</button>
 
-    <p id="serverReply"></p>
+
+    <h3>Server Reply:</h3>
+    <hr>
+    <div id="chat">
+
+        <p id="serverReply"></p>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
 
@@ -29,8 +35,11 @@
             console.log("Disconnected from server");
         });
 
-        socket.on("serverMessage", (data) => {
-            document.getElementById("serverReply").innerText  = data;
+        socket.on("messageFromServer", (data) => {
+         const chatDiv = document.getElementById("chat");
+         const msgElm = document.createElement("p");
+         msgElm.textContent = data;
+         chatDiv.appendChild(msgElm);
         });
 
         const sendMessage = ()=>{
